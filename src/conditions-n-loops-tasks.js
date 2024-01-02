@@ -21,8 +21,11 @@
  *  0  => true
  *  -5 => false
  */
-function isPositive(/* number */) {
-  throw new Error('Not implemented');
+function isPositive(number) {
+  if (number >= 0) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -38,8 +41,14 @@ function isPositive(/* number */) {
  *  -5, 0, 5      => 5
  *  -0.1, 0, 0.2  => 0.2
  */
-function getMaxNumber(/* a, b, c */) {
-  throw new Error('Not implemented');
+function getMaxNumber(a, b, c) {
+  let max = a;
+  if (b > a) {
+    max = b;
+  } else if (c > a) {
+    max = c;
+  }
+  return max;
 }
 
 /**
@@ -60,9 +69,19 @@ function getMaxNumber(/* a, b, c */) {
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  */
-function canQueenCaptureKing(/* queen, king */) {
-  throw new Error('Not implemented');
+function canQueenCaptureKing(queen, king) {
+  if (queen.x === king.x || queen.y === king.y) {
+    return true;
+  }
+  if (
+    Math.max(king.x, queen.x) - Math.min(king.x, queen.x) ===
+    Math.max(king.y, queen.y) - Math.min(king.y, queen.y)
+  ) {
+    return true;
+  }
+  return false;
 }
+// console.log(canQueenCaptureKing({ x: 2, y: 5 }, { x: 6, y: 2 }));
 
 /**
  * Determines whether a triangle is isosceles based on its side lengths.
@@ -82,8 +101,18 @@ function canQueenCaptureKing(/* queen, king */) {
  *  2, 2, 5   => false
  *  3, 0, 3   => false
  */
-function isIsoscelesTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isIsoscelesTriangle(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return false;
+  }
+  if (
+    (a === b && a + b > c) ||
+    (a === c && a + c > b) ||
+    (b === c && b + c > a)
+  ) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -100,9 +129,39 @@ function isIsoscelesTriangle(/* a, b, c */) {
  *  10  => X
  *  26  => XXVI
  */
-function convertToRomanNumerals(/* num */) {
-  throw new Error('Not implemented');
+function convertToRomanNumerals(num) {
+  let roman = '';
+  let dec = Math.floor(num / 10);
+  if (dec === 1) {
+    roman = 'X';
+  } else if (dec === 2) {
+    roman = 'XX';
+  } else if (dec === 3) {
+    roman = 'XXX';
+  }
+  dec = num % 10;
+  if (!dec) {
+    return roman;
+  }
+  if (dec < 4) {
+    for (let i = 0; i < dec; i += 1) {
+      roman += 'I';
+    }
+  } else if (dec === 4) {
+    roman += 'IV';
+  } else if (dec === 5) {
+    roman += 'V';
+  } else if (dec > 5 && dec < 9) {
+    roman += 'V';
+    for (let i = 5; i < dec; i += 1) {
+      roman += 'I';
+    }
+  } else if (dec === 9) {
+    roman += 'IX';
+  }
+  return roman;
 }
+// console.log(convertToRomanNumerals(31))
 
 /**
  * Converts a number to a string, replacing digits with words.
@@ -119,10 +178,59 @@ function convertToRomanNumerals(/* num */) {
  *  '10,5'    => 'one zero point five'
  *  '1950.2'  => 'one nine five zero point two'
  */
-function convertNumberToString(/* numberStr */) {
-  throw new Error('Not implemented');
+function convertNumberToString(numberStr) {
+  let strig = '';
+  for (let i = 0; i < numberStr.length; i += 1) {
+    if (i) {
+      strig += ' ';
+    }
+    switch (numberStr[i]) {
+      case '0':
+        strig += 'zero';
+        break;
+      case '1':
+        strig += 'one';
+        break;
+      case '2':
+        strig += 'two';
+        break;
+      case '3':
+        strig += 'three';
+        break;
+      case '4':
+        strig += 'four';
+        break;
+      case '5':
+        strig += 'five';
+        break;
+      case '6':
+        strig += 'six';
+        break;
+      case '7':
+        strig += 'seven';
+        break;
+      case '8':
+        strig += 'eight';
+        break;
+      case '9':
+        strig += 'nine';
+        break;
+      case '.':
+        strig += 'point';
+        break;
+      case ',':
+        strig += 'point';
+        break;
+      case '-':
+        strig += 'minus';
+        break;
+      default:
+        break;
+    }
+  }
+  return strig;
 }
-
+// console.log(convertNumberToString('241.90'));
 /**
  * Determines whether a string is a palindrome.
  * In this task, the use of methods of the String and Array classes is not allowed.
@@ -135,8 +243,13 @@ function convertNumberToString(/* numberStr */) {
  *  '0123210'   => true
  *  'qweqwe'    => false
  */
-function isPalindrome(/* str */) {
-  throw new Error('Not implemented');
+function isPalindrome(str) {
+  for (let i = 0; i < Math.floor(str.length / 2); i += 1) {
+    if (str[i] !== str[str.length - 1 - i]) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
@@ -153,8 +266,13 @@ function isPalindrome(/* str */) {
  *  'qwerty', 'Q'     => -1
  *  'qwerty', 'p'     => -1
  */
-function getIndexOf(/* str, letter */) {
-  throw new Error('Not implemented');
+function getIndexOf(str, letter) {
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i] === letter) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 /**
