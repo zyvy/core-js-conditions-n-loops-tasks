@@ -290,9 +290,21 @@ function getIndexOf(str, letter) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  let numStr = '';
+  let numTemp = num;
+  while (numTemp > 0) {
+    numStr += numTemp % 10;
+    numTemp = Math.floor(numTemp / 10);
+  }
+  for (let i = 0; i < numStr.length; i += 1) {
+    if (Number.parseInt(numStr[i], 10) === digit) {
+      return true;
+    }
+  }
+  return false;
 }
+// console.log(isContainNumber(123450, 5));
 
 /**
  * Finds the index of an element in an array where the sum of elements to the left equals the sum of elements to the right.
@@ -307,10 +319,21 @@ function isContainNumber(/* num, digit */) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let sumLeft = 0;
+  let sumRight = 0;
+  for (let i = 0; i < arr.length; i += 1) {
+    sumRight += arr[i];
+  }
+  for (let i = 0; i < Math.floor(arr.length); i += 1) {
+    sumLeft += arr[i];
+    if (sumLeft === sumRight - sumLeft - arr[i + 1]) {
+      return i + 1;
+    }
+  }
+  return -1;
 }
-
+// console.log(getBalanceIndex([1, 2, 5, 3, 0]))
 /**
  * Generates a spiral matrix of a given size, filled with numbers in ascending order starting from one.
  * The direction of filling with numbers is clockwise.
@@ -369,8 +392,19 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const newArr = arr;
+  let min;
+  for (let i = 0; i < arr.length; i += 1) {
+    min = newArr[i];
+    for (let j = i; j < arr.length; j += 1) {
+      if (newArr[j] < min) {
+        min = newArr[j];
+        [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+      }
+    }
+  }
+  return newArr;
 }
 
 /**
