@@ -411,19 +411,24 @@ function getSpiralMatrix(size) {
  *  ]                 ]
  */
 function rotateMatrix(matrix) {
-  newMatrix = [];
-  let x = 0;
-  let size = matrix.length;
-  for (let row = 0; row < size / 2; row++) {
-    for (let col = 0; col < size - row - 1; col++) {
+  const newMatrix = [];
+  const size = matrix.length;
+  for (let row = 0; row < size / 2; row += 1) {
+    for (let col = 0; col < size - row - 1; col += 1) {
       const temp = matrix[row][col];
-      matrix[row][col] = matrix[size - col - 1][size - row - 1];
-      matrix[size - col - 1][size - row - 1] = temp;
+      newMatrix[row][col] = matrix[size - col - 1][size - row - 1];
+      newMatrix[size - col - 1][size - row - 1] = temp;
     }
   }
-  return matrix;
+  return newMatrix;
 }
-console.log(rotateMatrix([[1,2,3], [4,5,6], [7,8,9]]))
+/* console.log(
+  rotateMatrix([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+  ])
+); */
 /**
  * Sorts an array of numbers in ascending order in place.
  * Employ any sorting algorithm of your choice.
@@ -519,38 +524,41 @@ For above example, we sort digits in bold 536974. We get “536479” which is t
 
 function getNearestBigger(number) {
   let arr = [];
-  let min_index;
-  let max_index;
-  while(number > 0) { 
-    arr.push(number % 10); 
-    number = Math.floor(number / 10)
+  let minIndex;
+  let maxIndex;
+  let newNumber = number;
+  while (newNumber > 0) {
+    arr.push(newNumber % 10);
+    newNumber = Math.floor(newNumber / 10);
   }
   let max = arr[0];
   arr = arr.reverse();
   for (let i = arr.length - 2; i >= 0; i -= 1) {
     if (arr[i] >= max) {
       max = arr[i];
-      continue;
     } else if (arr[i] < max) {
-      min_index = i;
-      console.log(`array ${arr}, fount min ${arr[i]} with index ${min_index}`)
+      minIndex = i;
       break;
-    }}
-  max_index = min_index + 1;
-  for (j = max_index; j < arr.length; j += 1){
-        if (arr[j] < arr[max_index] && arr[j] > arr[min_index]){
-          max_index = j;
-        }
-      }
-      const temp = arr[min_index];
-      arr[min_index] = arr[max_index];
-      arr[max_index] = temp;
-      console.log(`min index: ${min_index}, max index ${max_index} and after swap ${arr}`)
-      arr = arr.slice(0,min_index + 1).concat(arr.slice(min_index + 1).sort());
-  
-  return arr;
+    }
+  }
+  maxIndex = minIndex + 1;
+  for (let j = maxIndex; j < arr.length; j += 1) {
+    if (arr[j] < arr[maxIndex] && arr[j] > arr[minIndex]) {
+      maxIndex = j;
+    }
+  }
+  const temp = arr[minIndex];
+  arr[minIndex] = arr[maxIndex];
+  arr[maxIndex] = temp;
+  let arrNew = arr.filter((val, i) => i < minIndex + 1);
+  arrNew[arrNew.length] = arr.filter((val, i) => i > minIndex).sort();
+  arrNew = arrNew.flat();
+  return Number.parseInt(
+    arrNew.reduce((val, digit) => val * 10 + digit, 0),
+    10
+  );
 }
-console.log(getNearestBigger(534976))
+console.log(getNearestBigger(12345));
 
 module.exports = {
   isPositive,
