@@ -355,9 +355,50 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = [];
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = new Array(size);
+    for (let j = 0; j < size; j += 1) {
+      matrix[i][j] = 0;
+    }
+  }
+
+  let row = 0;
+  let col = 0;
+  let direction = 1; // 1: right, 2: bottom, 3: left, 4: up
+
+  for (let val = 1; val <= size * size; val += 1) {
+    //  console.log(`direction - ${direction}, current row - ${row}, current column - ${col}, current val - ${val}`);
+
+    matrix[row][col] = val;
+
+    if (direction === 1 && (matrix[row][col + 1] !== 0 || col === size - 1)) {
+      direction += 1;
+    } else if (
+      direction === 2 &&
+      (row === size - 1 || matrix[row + 1][col] !== 0)
+    ) {
+      direction += 1;
+    } else if (direction === 3 && (matrix[row][col - 1] !== 0 || col === 0)) {
+      direction += 1;
+    } else if (direction === 4 && (matrix[row - 1][col] !== 0 || row === 0)) {
+      direction = 1;
+    }
+
+    if (direction === 1) {
+      col += 1;
+    } else if (direction === 2) {
+      row += 1;
+    } else if (direction === 3) {
+      col -= 1;
+    } else {
+      row -= 1;
+    }
+  }
+  return matrix;
 }
+// console.log(getSpiralMatrix(4))
 
 /**
  * Rotates a matrix by 90 degrees clockwise in place.
@@ -394,23 +435,27 @@ function rotateMatrix(/* matrix */) {
  */
 function sortByAsc(arr) {
   //  console.log(arr);
-  function quiqcksort(newArr) {
-    if (newArr.length < 2) {
-      return newArr;
-    }
-    const arrLess = [];
-    const arrMore = [];
-    const pivot = newArr[0];
-    for (let i = 1; i < newArr.length; i += 1) {
-      if (newArr[i] > pivot) {
-        arrMore[arrMore.length] = newArr[i];
-      } else {
-        arrLess[arrLess.length] = newArr[i];
+  function partition(newArr, left, right) {
+    let pivot = newArr[right];
+    let tempLeft = left;
+    for (let i = left; i <= right; i += 1) {
+      if (newArr[i] <= pivot) {
+        pivot = [];
+        tempLeft = [];
       }
     }
-    return [...quiqcksort(arrLess), pivot, ...quiqcksort(arrMore)];
+    return tempLeft;
   }
-  return quiqcksort(arr);
+  function quicksort(newArr, left, right) {
+    if (left >= right) {
+      return newArr;
+    }
+    const pivot = partition(newArr, left, right - 1);
+    quicksort(newArr, left, pivot);
+    quicksort(newArr, pivot + 1, right);
+    return newArr;
+  }
+  quicksort(arr);
 }
 
 // console.log(sortByAsc([44, 9, 24, 10, 0, -57, 10, -49, -86, -94]))
@@ -425,16 +470,34 @@ function sortByAsc(arr) {
  * @return {string} The shuffled string.
  *
  * @example:
- *  '012345', 1 => '024135'
+ *  '012345', 1 => '024135' 023451 024513 024135
  *  'qwerty', 1 => 'qetwry'
  *  '012345', 2 => '024135' => '043215'
  *  'qwerty', 2 => 'qetwry' => 'qtrewy'
- *  '012345', 3 => '024135' => '043215' => '031425'
+ *  '012345', 3 => '024135' => '043215' => '031425' | 012345
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+// восстановление исходного за n+1? и далее по новой?
+function shuffleChar(str, iterations) {
+  let newStrLeft = '';
+  let newStrRight = '';
+  // console.log(str)
+  for (let i = 0; i < iterations; i += 1) {
+    newStrLeft = '';
+    newStrRight = '';
+    for (let j = 0; j < str.length; j += 1) {
+      if (j % 2 !== 0) {
+        newStrRight += str[j];
+      } else {
+        newStrLeft += str[j];
+      }
+    }
+    // str = newStrLeft + newStrRight;
+    // console.log(`iteration ${i}, word ${str}`)
+  }
+  return newStrLeft + newStrRight;
 }
+// shuffleChar('0123456789a', 20);
 
 /**
  * Returns the nearest largest integer consisting of the digits of the given positive integer.
