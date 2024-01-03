@@ -410,10 +410,20 @@ function getSpiralMatrix(size) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  newMatrix = [];
+  let x = 0;
+  let size = matrix.length;
+  for (let row = 0; row < size / 2; row++) {
+    for (let col = 0; col < size - row - 1; col++) {
+      const temp = matrix[row][col];
+      matrix[row][col] = matrix[size - col - 1][size - row - 1];
+      matrix[size - col - 1][size - row - 1] = temp;
+    }
+  }
+  return matrix;
 }
-
+console.log(rotateMatrix([[1,2,3], [4,5,6], [7,8,9]]))
 /**
  * Sorts an array of numbers in ascending order in place.
  * Employ any sorting algorithm of your choice.
@@ -467,23 +477,21 @@ function shuffleChar(str, iterations) {
   let newStr = str;
   let newStrLeft = '';
   let newStrRight = '';
-  // console.log(str)
   for (let i = 0; i < iterations; i += 1) {
     newStrLeft = '';
     newStrRight = '';
-    for (let j = 0; j < str.length; j += 1) {
+    for (let j = 0; j < newStr.length; j += 1) {
       if (j % 2 !== 0) {
-        newStrRight += str[j];
+        newStrRight += newStr[j];
       } else {
-        newStrLeft += str[j];
+        newStrLeft += newStr[j];
       }
     }
     newStr = newStrLeft + newStrRight;
-    // console.log(`iteration ${i}, word ${str}`)
   }
   return newStr;
 }
-// shuffleChar(console.log(shuffleChar('0123456789a', 20)));
+// shuffleChar(console.log(shuffleChar('012345', 2)));
 
 /**
  * Returns the nearest largest integer consisting of the digits of the given positive integer.
@@ -502,9 +510,47 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+/* 1) Traverse the given number from rightmost digit, keep traversing till you find a digit which is smaller than the previously traversed digit. 
+For example, if the input number is “534976”, we stop at 4 because 4 is smaller than next digit 9. If we do not find such a digit, then output is “Not Possible”.
+2) Now search the right side of above found digit ‘d’ for the smallest digit greater than ‘d’. For “534976″, the right side of 4 contains “976”. The smallest digit greater than 4 is 6.
+3) Swap the above found two digits, we get 536974 in above example.
+4) Now sort all digits from position next to ‘d’ to the end of number. The number that we get after sorting is the output. 
+For above example, we sort digits in bold 536974. We get “536479” which is the next greater number for input 534976. */
+
+function getNearestBigger(number) {
+  let arr = [];
+  let min_index;
+  let max_index;
+  while(number > 0) { 
+    arr.push(number % 10); 
+    number = Math.floor(number / 10)
+  }
+  let max = arr[0];
+  arr = arr.reverse();
+  for (let i = arr.length - 2; i >= 0; i -= 1) {
+    if (arr[i] >= max) {
+      max = arr[i];
+      continue;
+    } else if (arr[i] < max) {
+      min_index = i;
+      console.log(`array ${arr}, fount min ${arr[i]} with index ${min_index}`)
+      break;
+    }}
+  max_index = min_index + 1;
+  for (j = max_index; j < arr.length; j += 1){
+        if (arr[j] < arr[max_index] && arr[j] > arr[min_index]){
+          max_index = j;
+        }
+      }
+      const temp = arr[min_index];
+      arr[min_index] = arr[max_index];
+      arr[max_index] = temp;
+      console.log(`min index: ${min_index}, max index ${max_index} and after swap ${arr}`)
+      arr = arr.slice(0,min_index + 1).concat(arr.slice(min_index + 1).sort());
+  
+  return arr;
 }
+console.log(getNearestBigger(534976))
 
 module.exports = {
   isPositive,
