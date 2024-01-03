@@ -363,16 +363,11 @@ function getSpiralMatrix(size) {
       matrix[i][j] = 0;
     }
   }
-
   let row = 0;
   let col = 0;
-  let direction = 1; // 1: right, 2: bottom, 3: left, 4: up
-
+  let direction = 1;
   for (let val = 1; val <= size * size; val += 1) {
-    //  console.log(`direction - ${direction}, current row - ${row}, current column - ${col}, current val - ${val}`);
-
     matrix[row][col] = val;
-
     if (direction === 1 && (matrix[row][col + 1] !== 0 || col === size - 1)) {
       direction += 1;
     } else if (
@@ -434,28 +429,18 @@ function rotateMatrix(/* matrix */) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  //  console.log(arr);
-  function partition(newArr, left, right) {
-    let pivot = newArr[right];
-    let tempLeft = left;
-    for (let i = left; i <= right; i += 1) {
-      if (newArr[i] <= pivot) {
-        pivot = [];
-        tempLeft = [];
+  const newArr = arr;
+  let min;
+  for (let i = 0; i < arr.length; i += 1) {
+    min = newArr[i];
+    for (let j = i; j < arr.length; j += 1) {
+      if (newArr[j] < min) {
+        min = newArr[j];
+        [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
       }
     }
-    return tempLeft;
   }
-  function quicksort(newArr, left, right) {
-    if (left >= right) {
-      return newArr;
-    }
-    const pivot = partition(newArr, left, right - 1);
-    quicksort(newArr, left, pivot);
-    quicksort(newArr, pivot + 1, right);
-    return newArr;
-  }
-  quicksort(arr);
+  return newArr;
 }
 
 // console.log(sortByAsc([44, 9, 24, 10, 0, -57, 10, -49, -86, -94]))
@@ -479,6 +464,7 @@ function sortByAsc(arr) {
  */
 // восстановление исходного за n+1? и далее по новой?
 function shuffleChar(str, iterations) {
+  let newStr = str;
   let newStrLeft = '';
   let newStrRight = '';
   // console.log(str)
@@ -492,12 +478,12 @@ function shuffleChar(str, iterations) {
         newStrLeft += str[j];
       }
     }
-    // str = newStrLeft + newStrRight;
+    newStr = newStrLeft + newStrRight;
     // console.log(`iteration ${i}, word ${str}`)
   }
-  return newStrLeft + newStrRight;
+  return newStr;
 }
-// shuffleChar('0123456789a', 20);
+// shuffleChar(console.log(shuffleChar('0123456789a', 20)));
 
 /**
  * Returns the nearest largest integer consisting of the digits of the given positive integer.
