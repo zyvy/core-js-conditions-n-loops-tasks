@@ -443,7 +443,7 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(arr) {
+/* function sortByAsc(arr) {
   const newArr = arr;
   let min;
   for (let i = 0; i < arr.length; i += 1) {
@@ -456,9 +456,23 @@ function sortByAsc(arr) {
     }
   }
   return newArr;
+} */
+
+function sortByAsc(arr) {
+  const newArr = arr;
+  for (let i = 1; i < newArr.length; i += 1) {
+    const key = newArr[i];
+    let j = i - 1;
+    while (j >= 0 && newArr[j] > key) {
+      newArr[j + 1] = newArr[j];
+      j -= 1;
+    }
+    newArr[j + 1] = key;
+  }
+  return newArr;
 }
 
-// console.log(sortByAsc([44, 9, 24, 10, 0, -57, 10, -49, -86, -94]))
+// consle.log(sortByAsc([44, 9, 24, 10, 0, -57, 10, -49, -86, -94]))
 
 /**
  * Shuffles characters in a string so that the characters with an odd index are moved to the end of the string at each iteration.
@@ -558,7 +572,7 @@ function getNearestBigger(number) {
     10
   );
 }
-console.log(getNearestBigger(12345));
+// console.log(getNearestBigger(12345));
 
 module.exports = {
   isPositive,
